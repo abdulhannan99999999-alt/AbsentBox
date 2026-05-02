@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absentbox - 39 Page Design Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white overflow-hidden">
+
+    <div class="flex h-screen">
+        <!-- Sidebar: Page Navigator -->
+        <aside class="w-64 border-r border-slate-800 flex flex-col">
+            <div class="p-6 border-b border-slate-800">
+                <img src="../../logo.jpeg" alt="Logo" class="h-6">
+                <p class="text-[10px] text-slate-500 mt-2 font-bold uppercase tracking-widest">39 Page Reviewer</p>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide">
+                <div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-3">Auth Flow (7)</p>
+                    <ul class="space-y-1 text-sm">
+                        <li onclick="showPage('welcome')" class="p-2 rounded bg-red-500/10 text-red-400 cursor-pointer hover:bg-red-500/20">Welcome Screen</li>
+                        <li onclick="showPage('login')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Login</li>
+                        <li onclick="showPage('register')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Register</li>
+                        <li onclick="showPage('forgot')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Forgot Password</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-3">Dashboard (10)</p>
+                    <ul class="space-y-1 text-sm">
+                        <li onclick="showPage('dash-main')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Main Inbox</li>
+                        <li onclick="showPage('dash-empty')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Empty State</li>
+                        <li onclick="showPage('dash-summary')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">AI Summary Panel</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-3">Billing (8)</p>
+                    <ul class="space-y-1 text-sm">
+                        <li onclick="showPage('bill-plans')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Pricing Table</li>
+                        <li onclick="showPage('bill-checkout')" class="p-2 rounded text-slate-400 cursor-pointer hover:bg-slate-800">Checkout Flow</li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Preview Area -->
+        <main class="flex-1 bg-slate-950 flex items-center justify-center p-12">
+            <!-- Simulated Outlook Task Pane Container -->
+            <div class="w-[380px] h-[700px] bg-white rounded-[40px] shadow-2xl border-[12px] border-slate-800 overflow-hidden relative">
+                <div id="screen-container" class="h-full w-full overflow-y-auto overflow-x-hidden">
+                    <!-- Dynamic Screens injected here -->
+                    <div class="p-8 text-black text-center mt-20">
+                        <h1 class="text-2xl font-bold">Loading Page...</h1>
+                        <p class="text-slate-400 text-sm">Select a screen from the sidebar to review.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            const container = document.getElementById('screen-container');
+            
+            if(pageId === 'welcome') {
+                container.innerHTML = `
+                    <div class="p-8 h-full flex flex-col items-center justify-center bg-white text-black text-center">
+                        <img src="../../logo.jpeg" class="w-40 mb-12">
+                        <h2 class="text-2xl font-bold mb-2">Welcome To Absentbox!</h2>
+                        <p class="text-slate-400 text-xs mb-8">Your Inbox, Sorted By Relevance.</p>
+                        <div class="space-y-4 w-full">
+                            <div class="text-left text-[11px] space-y-2 border-b pb-4 mb-4">
+                                <p>✓ Automatic filtering</p>
+                                <p>✓ AI Summarization</p>
+                            </div>
+                            <button class="w-full py-3 border-2 border-red-500 text-red-500 font-bold rounded-lg">Login</button>
+                            <button class="w-full py-3 border-2 border-slate-800 text-slate-800 font-bold rounded-lg">Register</button>
+                        </div>
+                    </div>
+                `;
+            } else if(pageId === 'dash-main') {
+                container.innerHTML = `
+                    <div class="p-4 bg-white text-black h-full">
+                        <div class="flex items-center gap-2 mb-6">
+                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">MK</div>
+                            <div class="flex-1 overflow-x-auto flex gap-2 no-scrollbar">
+                                <span class="px-3 py-1 bg-red-500 text-white text-[10px] font-bold rounded-full">High 10</span>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-full">Customer 22</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <aside class="w-12 space-y-6">
+                                <div class="w-10 h-10 border-2 border-red-500 rounded-full flex items-center justify-center text-xs font-bold">227</div>
+                                <div class="space-y-4 text-slate-400"><i data-lucide="clock"></i><i data-lucide="send"></i></div>
+                            </aside>
+                            <div class="flex-1 space-y-4">
+                                <div class="border-b pb-3"><p class="text-xs font-bold">Andreas Lange</p><p class="text-[10px] text-slate-400">Hi Mario, about the contract...</p></div>
+                                <div class="border-b pb-3"><p class="text-xs font-bold">Sabrina Strab</p><p class="text-[10px] text-slate-400">The meeting has been moved...</p></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+            // More logic can be added here for all 39 screens
+        }
+        
+        // Default Page
+        showPage('welcome');
+    </script>
+</body>
+</html>

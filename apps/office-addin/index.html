@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absentbox | Interactive Industrial Plugin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+    <style>
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .pill { cursor: pointer; transition: 0.2s; }
+        .pill:hover { border-color: var(--absentbox-red); }
+        .action-item { cursor: pointer; }
+        .success-toast { position: fixed; bottom: 20px; right: 20px; background: #2D6A4F; color: white; padding: 12px 24px; border-radius: 12px; display: none; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    
+    <div id="screen-login" class="screen active">
+        <div class="login-container">
+            <div class="login-brand-side">
+                <img src="logo.jpeg" alt="Absentbox Logo" style="width: 220px; margin-bottom: 40px;">
+                <div class="feature-list">
+                    <div class="feature-item"><span>✓</span> Automatic filtering of important emails</div>
+                    <div class="feature-item"><span>✓</span> Intelligent categorization of emails</div>
+                    <div class="feature-item"><span>✓</span> Summary of longer emails and feedbacks</div>
+                    <div class="feature-item"><span>✓</span> Quick overview of tasks assigned to you</div>
+                    <div class="feature-item"><span>✓</span> Recognition and filtering of spam/newsletters</div>
+                </div>
+            </div>
+            <div class="login-form-side">
+                <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 40px; color: #1e293b;">Welcome To Absentbox!</h2>
+                <div class="input-group">
+                    <label>EMAIL</label>
+                    <input type="email" id="email-in" placeholder="mario@absentbox.de">
+                </div>
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="pass-in" placeholder="********">
+                </div>
+                <button class="btn-primary" id="login-btn">Sign in with Microsoft</button>
+                <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-top: 40px;">Or test the UI only:</p>
+                <button onclick="enterDemo()" style="width: 100%; padding: 14px; border: 2px solid #1e293b; background: white; font-weight: 700; border-radius: 12px; cursor: pointer; margin-top: 10px;">Enter Demo Mode</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-dashboard" class="screen">
+        <div class="dashboard-wrapper">
+            <div class="top-nav">
+                <div class="profile-circle">MK</div>
+                <div class="pill active" onclick="switchCategory('High Priority', this, 10)">High priority <span>10</span></div>
+                <div class="pill" onclick="switchCategory('Customer', this, 22)">Customer <span>22</span></div>
+                <div class="pill" onclick="switchCategory('Supervisor', this, 4)">Supervisor <span>4</span></div>
+                <div class="pill" onclick="switchCategory('In CC', this, 34)">In CC <span>34</span></div>
+            </div>
+
+            <div class="main-content">
+                <aside class="sidebar-actions">
+                    <div class="unread-hero" id="unread-count">0</div>
+                    <div class="action-item" onclick="showToast('Answered Today')">Answer today</div>
+                    <div class="action-item" onclick="showToast('Forwarded')">Forward</div>
+                    <div class="action-item" onclick="showToast('Meeting Planned')">Plan meeting</div>
+                    <div class="action-item" onclick="showToast('Delegated')">Delegate</div>
+                    <div class="action-item" style="color: #94a3b8; font-weight: 400; font-style: italic;">+ add your label</div>
+                </aside>
+
+                <div class="email-list-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 id="category-title" style="font-size: 20px; font-weight: 700;">High Priority</h3>
+                        <span style="font-size: 12px; color: #94a3b8; font-weight: 600;">Sort: Newest</span>
+                    </div>
+                    <div id="live-emails"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="success-toast">Action Successful</div>
+
+    <script src="app.js"></script>
+    <script>
+        Office.onReady();
+        let isDemo = false;
+
+        function enterDemo() {
+            isDemo = true;
+            document.getElementById('screen-login').classList.remove('active');
+            document.getElementById('screen-dashboard').classList.add('active');
+            loadLiveData();
+        }
+
+        document.getElementById('login-btn').onclick = async () => {
+            const account = await signIn();
+            if (account) {
+                document.getElementById('screen-login').classList.remove('active');
+                document.getElementById('screen-dashboard').classList.add('active');
+                loadLiveData();
+            }
+        };
+
+        function switchCategory(name, el, count) {
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('category-title').innerText = name;
+            document.getElementById('unread-count').innerText = count;
+            loadLiveData();
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg + " Successfully";
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        async function loadLiveData() {
+            const list = document.getElementById('live-emails');
+            if (isDemo) {
+                list.innerHTML = `
+                    <div class="email-row"><div class="email-avatar" style="background:#FF9F1C">AL</div><div class="email-info"><div class="email-header"><span class="sender-name">Andreas Lange</span><span class="email-time">10:45 AM</span></div><p class="email-snippet">Hi Mario, about the project proposal we discussed...</p></div></div>
+                    <div class="email-row"><div class="email-avatar" style="background:#2A579A">SS</div><div class="email-info"><div class="email-header"><span class="sender-name">Sabrina Strab</span><span class="email-time">Yesterday</span></div><p class="email-snippet">The meeting regarding Q4 goals is moved to Friday.</p></div></div>
+                `;
+                document.getElementById('unread-count').innerText = "227";
+                return;
+            }
+            
+            try {
+                const data = await fetchEmails();
+                const emails = data.value || [];
+                document.getElementById('unread-count').innerText = emails.length;
+                list.innerHTML = emails.length === 0 ? "<p style='text-align:center; padding:40px;'>No emails found.</p>" : "";
+                emails.forEach(email => {
+                    const name = email.from?.emailAddress?.name || "User";
+                    const initials = name.split(' ').map(n => n[0]).join('');
+                    list.innerHTML += `<div class="email-row"><div class="email-avatar">${initials}</div><div class="email-info"><div class="email-header"><span class="sender-name">${name}</span><span class="email-time">${new Date(email.receivedDateTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></div><p class="email-snippet">${email.subject}</p></div></div>`;
+                });
+            } catch (e) { list.innerHTML = "<p style='color:red; text-align:center;'>API Offline. Try Demo Mode.</p>"; }
+        }
+    </script>
+</body>
+</html>

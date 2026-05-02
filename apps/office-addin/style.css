@@ -1,0 +1,53 @@
+:root {
+    --absentbox-red: #EF5B5B;
+    --absentbox-dark: #1E293B;
+    --absentbox-gray: #94A3B8;
+    --absentbox-bg: #F8FAFC;
+    --absentbox-border: #E2E8F0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--absentbox-bg); color: var(--absentbox-dark); }
+
+/* --- LOGIN SCREEN: FIGMA MATCH --- */
+.login-container { display: flex; min-height: 100vh; background: white; }
+.login-brand-side { flex: 1.2; background: white; padding: 60px; border-right: 1px solid var(--absentbox-border); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.login-form-side { flex: 1; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+
+.feature-list { margin-top: 40px; text-align: left; max-width: 380px; }
+.feature-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 13px; color: #475569; }
+.feature-item span { color: var(--absentbox-red); font-weight: bold; }
+
+.input-group { margin-bottom: 24px; }
+.input-group label { display: block; font-size: 10px; font-weight: 700; color: var(--absentbox-gray); margin-bottom: 8px; letter-spacing: 0.05em; }
+.input-group input { width: 100%; padding: 14px; border: 1px solid var(--absentbox-border); border-radius: 12px; background: #F1F5F9; font-size: 14px; }
+
+.btn-primary { width: 100%; padding: 14px; border: 2px solid var(--absentbox-red); background: transparent; color: var(--absentbox-red); font-weight: 700; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+.btn-primary:hover { background: var(--absentbox-red); color: white; }
+
+/* --- DASHBOARD: FIGMA MATCH --- */
+.dashboard-wrapper { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.top-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; overflow-x: auto; padding-bottom: 8px; }
+.profile-circle { width: 44px; height: 44px; border-radius: 50%; background: var(--absentbox-red); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(239, 91, 91, 0.3); }
+
+.pill { padding: 8px 16px; border-radius: 24px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; white-space: nowrap; border: 1px solid var(--absentbox-border); background: white; color: #64748B; }
+.pill.active { background: var(--absentbox-red); color: white; border-color: var(--absentbox-red); box-shadow: 0 4px 12px rgba(239, 91, 91, 0.2); }
+.pill span { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+
+.main-content { display: flex; gap: 40px; align-items: flex-start; }
+.sidebar-actions { width: 160px; display: flex; flex-direction: column; gap: 24px; }
+.unread-hero { width: 80px; height: 80px; border: 6px solid var(--absentbox-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: var(--absentbox-dark); margin: 0 auto; }
+.action-item { font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: 0.2s; }
+.action-item:hover { color: var(--absentbox-red); }
+
+.email-list-container { flex: 1; background: white; border-radius: 24px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.02); }
+.email-row { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid #F1F5F9; transition: 0.2s; cursor: pointer; }
+.email-row:last-child { border-bottom: none; }
+.email-row:hover { background: #FAFBFF; }
+
+.email-avatar { width: 40px; height: 40px; border-radius: 50%; background: #CBD5E1; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+.email-info { flex: 1; }
+.email-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.sender-name { font-size: 14px; font-weight: 700; color: var(--absentbox-dark); }
+.email-time { font-size: 11px; color: var(--absentbox-gray); }
+.email-snippet { font-size: 13px; color: #64748B; line-height: 1.5; }

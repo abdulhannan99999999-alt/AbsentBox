@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+dist/
+.DS_Store
+
+# Industrial Secrets
+.env
+*.env
+auth.js
+!app.js
+
+# Build files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation
+docs/
+*.pdf
