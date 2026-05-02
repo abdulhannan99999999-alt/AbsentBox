@@ -1,6 +1,18 @@
-import React from 'react';
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../../auth";
 
 export default function Welcome({ onNext }: { onNext: () => void }) {
+  const { instance } = useMsal();
+
+  const handleLogin = async () => {
+    try {
+      await instance.loginPopup(loginRequest);
+      onNext(); // Navigate to Dashboard after successful login
+    } catch (e) {
+      console.error("Login failed:", e);
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-white">
       {/* BRAND SIDE: FIGMA MATCH */}
@@ -53,7 +65,7 @@ export default function Welcome({ onNext }: { onNext: () => void }) {
           </div>
 
           <button 
-            onClick={onNext}
+            onClick={handleLogin}
             className="w-full py-4 border-2 border-red-500 text-red-500 font-bold rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
           >
             Sign in with Microsoft
