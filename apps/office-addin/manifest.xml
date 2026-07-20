@@ -13,8 +13,8 @@
   <DisplayName DefaultValue="Absentbox" />
   <Description DefaultValue="Process your absence emails with AI-powered intelligence." />
   
-  <IconUrl DefaultValue="https://localhost:3000/logo.jpeg" />
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/logo.jpeg" />
+  <IconUrl DefaultValue="https://office-addin-theta.vercel.app/logo.jpeg" />
+  <HighResolutionIconUrl DefaultValue="https://office-addin-theta.vercel.app/logo.jpeg" />
 
   <Hosts>
     <Host Name="Mailbox" />
@@ -29,7 +29,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:3000/index.html" />
+        <SourceLocation DefaultValue="https://office-addin-theta.vercel.app/index.html" />
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -84,7 +84,7 @@
         <bt:Image id="Icon.80x80" resid="Icon.80x80" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/index.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://office-addin-theta.vercel.app/index.html" />
       </bt:Urls>
     </Resources>
   </VersionOverrides>
