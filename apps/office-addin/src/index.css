@@ -1,15 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Brand Design Tokens ── */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --ab-red: #D4654A;
+  --ab-red-light: #EF5B5B;
+  --ab-red-dark: #B84A33;
+  --ab-orange: #E8734A;
+  --ab-blue: #2A579A;
+  --ab-blue-light: #4A7CC9;
+  --ab-green: #4CAF50;
+  --ab-green-dark: #388E3C;
+  --ab-teal: #26A69A;
+  --ab-purple: #7C4DFF;
+  --ab-dark: #1E293B;
+  --ab-gray: #64748B;
+  --ab-light: #F8FAFC;
+  --ab-border: #E2E8F0;
+  --ab-card: #FFFFFF;
+  --ab-sidebar-bg: #FFFFFF;
+  --ab-text-primary: #1E293B;
+  --ab-text-secondary: #64748B;
+  --ab-text-muted: #94A3B8;
+  --ab-overlay: rgba(0, 0, 0, 0.4);
+  --ab-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --ab-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --ab-radius: 12px;
+  --ab-radius-lg: 20px;
+  --ab-transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode */
+.dark {
+  --ab-light: #0F172A;
+  --ab-card: #1E293B;
+  --ab-sidebar-bg: #1A2332;
+  --ab-border: #334155;
+  --ab-text-primary: #F1F5F9;
+  --ab-text-secondary: #94A3B8;
+  --ab-text-muted: #64748B;
+  --ab-overlay: rgba(0, 0, 0, 0.6);
+  --ab-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --ab-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Base Styles ── */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--ab-light);
+  color: var(--ab-text-primary);
+  transition: background-color var(--ab-transition), color var(--ab-transition);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Scrollbar Hide Utility ── */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── Custom Scrollbar (when visible) ── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ab-border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ab-gray);
+}
+
+/* ── Input & Focus Styles ── */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--ab-red);
+}
+
+/* ── Orange/Red Border Accent for Auth Cards (Figma) ── */
+.auth-card {
+  border: 2px solid var(--ab-orange);
+  border-radius: var(--ab-radius-lg);
+  background: var(--ab-card);
+  box-shadow: var(--ab-shadow);
+  position: relative;
+  overflow: hidden;
+}
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ab-red), var(--ab-orange));
+}
+.auth-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ab-orange), var(--ab-red));
+}
+
+/* ── Sidebar Shared Styles ── */
+.sidebar-nav {
+  background: var(--ab-sidebar-bg);
+  border-right: 1px solid var(--ab-border);
+  transition: background-color var(--ab-transition);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--ab-text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--ab-transition);
+  user-select: none;
+}
+.sidebar-item:hover {
+  background: rgba(212, 101, 74, 0.06);
+  color: var(--ab-text-primary);
+}
+.sidebar-item.active {
+  color: var(--ab-text-primary);
+  font-weight: 600;
+}
+.sidebar-item.active::before {
+  content: '›';
+  font-weight: 800;
+  color: var(--ab-red);
+  margin-right: 2px;
+}
+.sidebar-sub-item {
+  padding-left: 32px;
+  font-size: 11px;
+}
+
+/* ── Category Pill Colors (Dashboard) ── */
+.pill-high-priority { background: #EF5B5B; color: white; }
+.pill-customer { background: #4CAF50; color: white; }
+.pill-supervisor { background: #E8734A; color: white; }
+.pill-in-cc { background: #2A579A; color: white; }
+.pill-meetings { background: #1A365D; color: white; }
+.pill-uncategorized { background: #94A3B8; color: white; }
+.pill-newsletter { background: #26A69A; color: white; }
+.pill-spam { background: #374151; color: white; }
+.pill-supplier { background: #64748B; color: white; }
+.pill-complaints { background: #DC2626; color: white; }
+.pill-proxy { background: #7C4DFF; color: white; }
+.pill-tasksForMe { background: #D97706; color: white; }
+.pill-custom { background: #0EA5E9; color: white; }
+
+/* ── Toggle Switch ── */
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: #CBD5E1;
+  cursor: pointer;
+  transition: background var(--ab-transition);
+  flex-shrink: 0;
+}
+.toggle-switch.active {
+  background: var(--ab-blue);
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform var(--ab-transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-switch.active::after {
+  transform: translateX(18px);
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(212, 101, 74, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(212, 101, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 101, 74, 0); }
+}
+@keyframes toast-slide {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes checkmark {
+  0% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+.animate-slide-right { animation: slideInRight 0.3s ease-out forwards; }
+.animate-slide-left { animation: slideInLeft 0.3s ease-out forwards; }
+.animate-scale-in { animation: scaleIn 0.3s ease-out forwards; }
+.animate-pulse-ring { animation: pulse-ring 1.5s infinite; }
+.animate-toast { animation: toast-slide 0.4s ease-out forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* Stagger children animations */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+
+/* ── Toast Notification ── */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  z-index: 9999;
+  animation: toast-slide 0.4s ease-out forwards;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.toast-success { background: var(--ab-green); }
+.toast-error { background: var(--ab-red); }
+.toast-info { background: var(--ab-blue); }
+
+/* ── Calendar Styles ── */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  font-size: 11px;
+}
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--ab-transition);
+  font-weight: 500;
+}
+.calendar-day:hover {
+  background: rgba(212, 101, 74, 0.1);
+}
+.calendar-day.selected {
+  background: var(--ab-blue);
+  color: white;
+  font-weight: 700;
+}
+.calendar-day.in-range {
+  background: rgba(42, 87, 154, 0.1);
+}
+.calendar-day.today {
+  border: 2px solid var(--ab-red);
+}
+.calendar-day.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.calendar-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ab-text-secondary);
+  text-align: center;
+  padding: 4px;
+}
+
+/* ── Meeting Calendar Grid ── */
+.meeting-grid {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  border: 1px solid var(--ab-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.meeting-header {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  color: white;
+}
+.meeting-cell {
+  padding: 8px;
+  border: 1px solid var(--ab-border);
+  min-height: 40px;
+  font-size: 10px;
+  position: relative;
+}
+.meeting-time {
+  font-size: 10px;
+  color: var(--ab-text-muted);
+  padding: 8px 6px;
+  border: 1px solid var(--ab-border);
+  display: flex;
+  align-items: center;
+}
+.meeting-block {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: white;
+  padding: 2px 4px;
+  text-align: center;
+}
+
+/* ── Outlook Email Preview Overlay ── */
+.outlook-window {
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--ab-shadow-lg);
+  background: white;
+}
+.outlook-titlebar {
+  background: #F1F5F9;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #E2E8F0;
+}
+.outlook-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ── Responsive: Outlook Task Pane (380px) ── */
+@media (max-width: 420px) {
+  .auth-card {
+    border-radius: 12px;
+    margin: 8px;
+  }
+  .sidebar-nav {
+    display: none;
+  }
 }

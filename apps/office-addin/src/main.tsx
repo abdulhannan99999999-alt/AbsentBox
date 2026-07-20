@@ -5,11 +5,17 @@ import './index.css'
 
 import { MsalProvider } from "@azure/msal-react";
 import { msalInstance } from "./auth";
+import { AppProvider } from "./store/AppContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MsalProvider instance={msalInstance}>
-      <App />
-    </MsalProvider>
+    <ErrorBoundary>
+      <MsalProvider instance={msalInstance}>
+        <AppProvider>
+          <App />
+        </AppProvider>
+      </MsalProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 )
