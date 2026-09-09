@@ -19,3 +19,46 @@ yarn-error.log*
 docs/
 Figma_Screenshot/
 *.pdf
+
+# ---- added by cleanup: regenerable + secrets + oversized ----
+node_modules/
+.next/
+.turbo/
+.parcel-cache/
+dist/
+build/
+Pods/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.dart_tool/
+.gradle/
+.cxx/
+DerivedData/
+Library/ScriptAssemblies/
+Temp/
+Obj/
+
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.keystore
+*.jks
+serviceAccountKey.json
+
+# oversized binaries (GitHub rejects >100MB)
+*.apk
+*.aab
+*.ipa
+*.db
+*.dylib
+*.so
+*.unitypackage
+*.mkv
+*.zip
+
+.DS_Store
